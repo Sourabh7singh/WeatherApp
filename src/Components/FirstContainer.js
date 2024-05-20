@@ -7,6 +7,7 @@ function FirstContainer(props) {
     const month = ["Jan","Feb","March","April","May","June","July","Aug","Sep","Oct","Nov","Dec"];
   return (
     <div className="first-container">
+        
             {/* <!-- first box --> */}
             <div className="time">
                 <div className="fc-text">{location.name}</div>
@@ -16,6 +17,7 @@ function FirstContainer(props) {
                     ,{location.localtime.slice(8,10)} {month[new Date(location.localtime).getMonth()]}
                 </div>
             </div>
+
             {/* <!-- Second box --> */}
             <div className="weather">
                 <div className="start">

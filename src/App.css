@@ -80,7 +80,7 @@ nav {
   top: 0;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 1rem;
+  /* gap: 2rem; */
   align-items: end;
   z-index: 5;
   background-color: rgba(255, 255, 255, 0.4);
@@ -88,7 +88,13 @@ nav {
   height: 40%;
   width: 100%;
   display: none;
+  transition: all 0.2s;
 }
+#sidebar .form-inp,#sidebar .search-logo{
+  margin: 1rem;
+}
+
+
 /* Nav End */
 
 /* Main container start */
@@ -301,8 +307,9 @@ nav {
     display: none;
   }
   #sidebar .nav-btn {
+    display: block;
     align-self: center;
-    margin: 1rem;
+    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import logo from './Saurabh.ico'
+import { toast } from 'react-toastify';
 
 const Navbar = (props) => {
-    const apikey = process.env.REACT_APP_API_KEY
+    const apikey = process.env.REACT_APP_API_KEY;
     const handlesidebar=()=>{
         const sidebar = document.getElementById('sidebar');
         if (sidebar.style.display === "block"){
@@ -11,21 +12,40 @@ const Navbar = (props) => {
         else{
             sidebar.style.display = "block"
         }
-    }; 
+    }
+
     const handleCurrentLocation=()=>{
         if(!navigator.geolocation){
-            alert("Location is disabled");
+            toast("Location is disabled",{type:"error"});
         }
         navigator.geolocation.getCurrentPosition((position)=>{
-            let url = `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${position.coords.latitude},${position.coords.longitude}&days=3&aqi=yes&alerts=yes`
+            let url = `https://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${position.coords.latitude},${position.coords.longitude}&days=3&aqi=yes&alerts=yes`
             props.fetchdata(url)
-        },()=>{alert("Cannot get location");})
+        },()=>{toast("Cannot get location",{type:"error"});})
     }
-    const handleSearch=(e)=>{
-        let text = document.getElementById("searchbox").value
-        let url = `http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${text}&days=3&aqi=yes&alerts=yes`
-        props.fetchdata(url);
+
+    const handleSearch=()=>{
+        let text = document.getElementById("searchbox").value?document.getElementById("searchbox").value:document.getElementById("side-bar-searchbox").value;
+        if (text===""||text===" ") return toast("Invalid field",{type:"error"});
+        else{
+            let url = `https://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${text}&days=3&aqi=yes&alerts=yes`;
+            props.fetchdata(url);
+        }
     }
+    useEffect(()=>{
+        document.addEventListener("keydown",(e)=>{
+            if (e.key==="Enter"){
+                handleSearch();
+            }
+        });
+
+        return ()=>document.removeEventListener("keydown",(e)=>{
+            if (e.key==="Enter"){
+                handleSearch();
+            }
+        })
+        // eslint-disable-next-line
+    },[]);
   return (
     <>
     <nav className="main-nav">
@@ -56,7 +76,7 @@ const Navbar = (props) => {
             <svg xmlns="http://www.w3.org/2000/svg" onClick={handlesidebar} height="40" cursor="pointer" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
         </span>
         <div className="searchcontainer">
-            <label htmlFor="searchbtn">
+            <label htmlFor="searchbtn" className='search-logo'>
                 <svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" cursor="pointer" viewBox="0 -960 960 960">
                     <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
                 </svg>            
